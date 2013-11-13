@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email         = ["blazej.kosmowski@selleo.com"]
   s.homepage      = "https://github.com//activerecord-database-views"
   s.summary       = "Facilitates reloading of DB views"
-  s.description   = "TODO: description"
+  s.description   = "Facilitates storing and reloading of DB views within Rails applications"
 
   s.files         = `git ls-files app lib`.split("\n")
   s.platform      = Gem::Platform::RUBY
