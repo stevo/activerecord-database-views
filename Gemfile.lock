@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activerecord-database-views (0.0.1.pre1)
+    activerecord-database-views (0.0.1.pre2)
 
 GEM
   remote: https://rubygems.org/
