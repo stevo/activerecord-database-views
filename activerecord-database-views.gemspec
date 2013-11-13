@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version       = Activerecord::Database::Views::VERSION
   s.authors       = ["stevo"]
   s.email         = ["blazej.kosmowski@selleo.com"]
-  s.homepage      = "https://github.com//activerecord-database-views"
+  s.homepage      = "https://github.com/stevo/activerecord-database-views"
   s.summary       = "Facilitates reloading of DB views"
   s.description   = "Facilitates storing and reloading of DB views within Rails applications"
 
