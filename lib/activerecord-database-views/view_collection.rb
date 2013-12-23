@@ -6,22 +6,18 @@ module ActiveRecord::DatabaseViews
 
     attr_reader :views
 
+    delegate :each, to: :views
+
     def initialize
       @views = view_paths.map { |path| View.new(path) }
     end
 
     def drop!
-      views.each(&:drop!)
-    end
-
-    def each
-      views.each { |view| yield view }
+      each(&:drop!)
     end
 
     def load!
-      while views.present?
-        load_view(views.first)
-      end
+      load_view(first) while first
     end
 
     private
@@ -29,10 +25,9 @@ module ActiveRecord::DatabaseViews
     def load_view(view)
       begin
         view.load! and views.delete(view)
-      rescue ActiveRecord::StatementInvalid => exc
-        if (related_view = retrieve_related_view(exc))
-          load_view(related_view)
-          retry
+      rescue ActiveRecord::StatementInvalid => exception
+        if (related_view = retrieve_related_view(exception))
+          load_view(related_view) and retry
         else
           raise exc
         end
@@ -46,7 +41,7 @@ module ActiveRecord::DatabaseViews
     end
 
     def view_paths
-      Dir.glob("db/views/**/*.sql")
+      Dir.glob('db/views/**/*.sql')
     end
   end
 end
