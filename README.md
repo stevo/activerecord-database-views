@@ -3,8 +3,6 @@ activerecord-database-views
 
 Allows database views to be stored as sql files and be easily applyable
 
-*This is early version of gem - it works, but the code does not look perfect - pull requests are welcome :)*
-
 Installation
 ------------
 
