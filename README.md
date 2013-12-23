@@ -29,7 +29,7 @@ SELECT * FROM users ORDER BY users.id DESC
 Then run console (`console c`) and execute...
 
 ```ruby
-ActiveRecord::Base.reload_views!
+ActiveRecord::DatabaseViews.reload!
 ```
 
 ...to reload all defined views.
@@ -53,7 +53,15 @@ and run
 ReverseUser.all
 ```
 
+### How to run some code with views dropped
 
+This is sometimes necessary in case of some changing migrations
+
+```ruby
+ActiveRecord::DatabaseViews.without do
+    # some code that has to be executed with views dropped
+end
+```
 
 ### How to reload views automatically after migrations
 
@@ -65,7 +73,7 @@ db_tasks = %w[db:migrate db:rollback db:schema:load]
 namespace :reload_views do
   db_tasks.each do |task_name|
     task task_name => %w[environment db:load_config] do
-      ActiveRecord::Base.reload_views!
+      ActiveRecord::DatabaseViews.reload!
     end
   end
 end
