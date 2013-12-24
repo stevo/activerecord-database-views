@@ -1,5 +1,5 @@
-activerecord-database-views
-===========================
+# activerecord-database-views [![Code Climate](https://codeclimate.com/repos/52b9755ee30ba0073d0155b9/badges/49e598060c1ac3936100/gpa.png)](https://codeclimate.com/repos/52b9755ee30ba0073d0155b9/feed)
+
 
 Allows database views to be stored as sql files and be easily applyable
 
