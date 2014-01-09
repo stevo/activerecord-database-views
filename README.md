@@ -61,6 +61,19 @@ ActiveRecord::DatabaseViews.without do
 end
 ```
 
+### How to force rails to return instances of original class and not view class
+
+`discriminate_class_for_record` to the rescue :)
+
+```ruby
+class ReverseUser < ActiveRecord::Base
+  private
+    
+  def self.discriminate_class_for_record(record) 
+    User
+  end
+end
+```
 ### How to reload views automatically after migrations
 
 Add new file `hooks.rake` under `lib\tasks` and copy following code
