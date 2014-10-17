@@ -27,6 +27,7 @@ module ActiveRecord::DatabaseViews
         view.load! and views.delete(view)
       rescue ActiveRecord::StatementInvalid => exception
         if (related_view = retrieve_related_view(exception))
+          ActiveRecord::Base.connection.rollback_db_transaction
           load_view(related_view) and retry
         else
           raise exception
