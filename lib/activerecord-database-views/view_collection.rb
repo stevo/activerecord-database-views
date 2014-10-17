@@ -29,7 +29,7 @@ module ActiveRecord::DatabaseViews
         if (related_view = retrieve_related_view(exception))
           load_view(related_view) and retry
         else
-          raise exc
+          raise exception
         end
       end
     end
