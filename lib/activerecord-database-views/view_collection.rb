@@ -41,7 +41,7 @@ module ActiveRecord::DatabaseViews
     end
 
     def view_paths
-      Dir.glob('db/views/**/*.sql')
+      Dir.glob('db/views/**/*.{sql,sql.erb}')
     end
   end
 end

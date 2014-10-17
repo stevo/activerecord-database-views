@@ -1,3 +1,5 @@
+require 'erb'
+
 module ActiveRecord::DatabaseViews
   class View
     attr_reader :path
@@ -15,7 +17,7 @@ module ActiveRecord::DatabaseViews
     end
 
     def name
-      File.basename(path, '.sql')
+      File.basename(File.basename(path, '.erb'), '.sql')
     end
 
     private
@@ -25,7 +27,11 @@ module ActiveRecord::DatabaseViews
     end
 
     def sql
-      File.read(full_path)
+      if File.extname(path) == '.erb'
+        ERB.new(File.read(full_path)).result
+      else
+        File.read(full_path)
+      end
     end
 
     def call_sql!(sql)
