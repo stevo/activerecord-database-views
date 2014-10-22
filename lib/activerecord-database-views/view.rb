@@ -1,5 +1,7 @@
 module ActiveRecord::DatabaseViews
   class View
+    FILE_NAME_MATCHER_WITH_PREFIX = /^\d+?_(.+)/
+
     attr_reader :path
 
     def initialize(path)
@@ -15,10 +17,18 @@ module ActiveRecord::DatabaseViews
     end
 
     def name
-      File.basename(path, '.sql')
+      if basename =~ FILE_NAME_MATCHER_WITH_PREFIX
+        FILE_NAME_MATCHER_WITH_PREFIX.match(basename)[1]
+      else
+        basename
+      end
     end
 
     private
+
+    def basename
+      @basename ||= File.basename(path, '.sql')
+    end
 
     def full_path
       Rails.root.join(path)
