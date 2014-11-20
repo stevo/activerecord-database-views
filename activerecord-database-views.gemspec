@@ -16,4 +16,7 @@ Gem::Specification.new do |s|
   s.platform      = Gem::Platform::RUBY
   s.require_paths = ['lib']
   s.rubyforge_project = '[none]'
+
+  s.add_development_dependency 'minitest'
+  s.add_runtime_dependency 'activerecord', '~> 4.0', '<= 5.0'
 end
