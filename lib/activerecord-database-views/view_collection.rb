@@ -3,6 +3,7 @@ module ActiveRecord::DatabaseViews
     MISSING_RELATION_REGEX = /relation \"(.*)\" does not exist/
     MISSING_VIEW_REGEX = /view \"(.*)\" does not exist/
     DROP_COLUMNS_REGEX = /cannot drop columns from view/
+    CHANGE_COLUMNS_REGEX = /cannot change name of view column \"(.*)\" to \"(.*)\"/
 
     include Enumerable
 
@@ -56,7 +57,8 @@ module ActiveRecord::DatabaseViews
     end
 
     def schema_changed?(exception)
-      exception.message =~ DROP_COLUMNS_REGEX
+      exception.message =~ DROP_COLUMNS_REGEX ||
+      exception.message =~ CHANGE_COLUMNS_REGEX
     end
 
     def view_paths

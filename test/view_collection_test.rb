@@ -29,4 +29,12 @@ class ViewCollectionTests < MiniTest::Test
       collection.load!
     }
   end
+
+  def test_it_can_properly_catch_and_execute_when_columns_are_changed
+    collection = ActiveRecord::DatabaseViews::ViewCollection.new
+    ActiveRecord::DatabaseViews::View.any_instance.expects(:load!).raises(ActiveRecord::StatementInvalid, 'cannot change name of view column "test1" to "test1_full"')
+    assert_raises (ActiveRecord::ConnectionNotEstablished) {
+      collection.load!
+    }
+  end
 end
