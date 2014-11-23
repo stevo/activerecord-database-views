@@ -37,4 +37,12 @@ class ViewCollectionTests < MiniTest::Test
       collection.load!
     }
   end
+
+  def test_it_can_property_catch_and_execute_when_a_column_is_undefined
+    collection = ActiveRecord::DatabaseViews::ViewCollection.new
+    ActiveRecord::DatabaseViews::View.any_instance.expects(:load!).raises(ActiveRecord::StatementInvalid, 'column test1 does not exist')
+    assert_raises (ActiveRecord::ConnectionNotEstablished) {
+      collection.load!
+    }
+  end
 end
