@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'pg'
-  s.add_runtime_dependency 'activerecord', '~> 4.0', '<= 5.0'
+  s.add_runtime_dependency 'activerecord', '>= 3.0', '<= 5.0'
 end
