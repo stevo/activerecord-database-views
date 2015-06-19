@@ -1,4 +1,5 @@
 module ActiveRecord::DatabaseViews
+
   class ViewCollection
     MISSING_RELATION_REGEX = /relation \"(.*)\" does not exist/
     MISSING_VIEW_REGEX = /view \"(.*)\" does not exist/
@@ -13,7 +14,12 @@ module ActiveRecord::DatabaseViews
     delegate :each, to: :views
 
     def initialize
-      @views = view_paths.map { |path| View.new(path) }
+      view_exclusion_filter = ActiveRecord::DatabaseViews.register_view_exclusion_filter
+      @views = view_paths.map do |path|
+        view = View.new(path)
+        next if view_exclusion_filter && view_exclusion_filter.call(view.name)
+        view
+      end.compact
     end
 
     def drop!

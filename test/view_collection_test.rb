@@ -45,4 +45,15 @@ class ViewCollectionTests < MiniTest::Test
       collection.load!
     }
   end
+
+  def test_it_respects_view_exclusion_filter
+    ActiveRecord::DatabaseViews.register_view_exclusion_filter( lambda { |name| name == 'sql_a_queries_from_base_view' })
+    assert ActiveRecord::DatabaseViews.register_view_exclusion_filter.is_a?(Proc)
+    collection = ActiveRecord::DatabaseViews::ViewCollection.new
+    assert_equal ['sql_base_view'], collection.collect(&:name)
+
+    ActiveRecord::DatabaseViews.register_view_exclusion_filter(false)
+    assert ActiveRecord::DatabaseViews.register_view_exclusion_filter.nil?
+  end
+
 end
