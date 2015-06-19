@@ -12,19 +12,19 @@ module ActiveRecord::DatabaseViews
     @view_exclusion_filter
   end
 
-  def self.views
-    ViewCollection.new
+  def self.views(verbose=true)
+    ViewCollection.new verbose
   end
 
-  def self.without
-    views.drop!
+  def self.without(verbose=true)
+    views(verbose).drop!
     yield if block_given?
-    views.load!
+    views(verbose).load!
   end
 
-  def self.reload!
+  def self.reload!(verbose=true)
     ActiveRecord::Base.transaction do
-      without
+      without verbose
     end
   end
 end

@@ -9,11 +9,12 @@ module ActiveRecord::DatabaseViews
 
     include Enumerable
 
-    attr_reader :views
+    attr_reader :views, :verbose
 
     delegate :each, to: :views
 
-    def initialize
+    def initialize(verbose=true)
+      @verbose = verbose
       view_exclusion_filter = ActiveRecord::DatabaseViews.register_view_exclusion_filter
       @views = view_paths.map do |path|
         view = View.new(path)
@@ -32,33 +33,38 @@ module ActiveRecord::DatabaseViews
 
     private
 
+    def log(msg)
+      return unless verbose
+      puts msg
+    end
+
     def load_view(view)
       name = view.name
 
       begin
         view.load! and views.delete(view)
-        puts "#{name}: Loaded"
+        log "#{name}: Loaded"
       rescue ActiveRecord::StatementInvalid => exception
         ActiveRecord::Base.connection.rollback_db_transaction
 
         if schema_changed?(exception)
-          puts "#{name}: Column definitions have changed"
+          log "#{name}: Column definitions have changed"
           # Drop the view
           view.drop!
           # Load it again
           load_view(view)
         elsif undefined_column?(exception)
-          puts "#{name}: Undefined column"
+          log "#{name}: Undefined column"
           # Drop all the remaining views since we can't detect which one it is
           views.each(&:drop!)
           # Load the view again (which will trigger a missing relation error and proceed to load that view)
           load_view(view)
         elsif (related_view = retrieve_related_view(exception))
-          puts "#{name}: Contains missing relation"
+          log "#{name}: Contains missing relation"
           # Load the relation that is mentioned
           load_view(related_view) and retry
         elsif (related_view = retrieve_missing_view(exception))
-          puts "#{name}: Contains missing view"
+          log "#{name}: Contains missing view"
           # Load the view that is mentioned
           load_view(related_view) and retry
         else
