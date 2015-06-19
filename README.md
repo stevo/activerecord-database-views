@@ -68,8 +68,8 @@ end
 ```ruby
 class ReverseUser < ActiveRecord::Base
   private
-    
-  def self.discriminate_class_for_record(record) 
+
+  def self.discriminate_class_for_record(record)
     User
   end
 end
