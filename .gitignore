@@ -1,6 +1,7 @@
 *.gem
 *.rbc
 .bundle
+Gemfile.lock
 .config
 coverage
 InstalledFiles
@@ -16,3 +17,6 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# virtual environment configs
+.ruby-*

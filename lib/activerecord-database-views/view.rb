@@ -1,3 +1,5 @@
+require 'erb'
+
 module ActiveRecord::DatabaseViews
   class View
     FILE_NAME_MATCHER_WITH_PREFIX = /^\d+?_(.+)/
@@ -27,7 +29,7 @@ module ActiveRecord::DatabaseViews
     private
 
     def basename
-      @basename ||= File.basename(path, '.sql')
+      @basename ||= File.basename(File.basename(path, '.erb'), '.sql')
     end
 
     def full_path
@@ -35,7 +37,11 @@ module ActiveRecord::DatabaseViews
     end
 
     def sql
-      File.read(full_path)
+      if File.extname(path) == '.erb'
+        ERB.new(File.read(full_path)).result
+      else
+        File.read(full_path)
+      end
     end
 
     def call_sql!(sql)

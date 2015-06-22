@@ -68,8 +68,8 @@ end
 ```ruby
 class ReverseUser < ActiveRecord::Base
   private
-    
-  def self.discriminate_class_for_record(record) 
+
+  def self.discriminate_class_for_record(record)
     User
   end
 end
@@ -97,3 +97,13 @@ end
 ```
 
 As a bonus you will be able to reload views using rake task as well, i.e. `rake reload_views:db:migrate`
+
+### How to conditionally exclude views
+Sometimes selected views may need to be excluded from loading, for example if not valid for a certain environment.
+
+An exclusion filter may be registered (for example in an initialization file):
+
+```ruby
+ActiveRecord::DatabaseViews.register_view_exclusion_filter( lambda { |name| name == 'exclude_this_view' })
+```
+
